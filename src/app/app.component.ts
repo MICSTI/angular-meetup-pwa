@@ -22,4 +22,13 @@ export class AppComponent {
       throw new Error("Permission not granted for Notification");
     }
   };
+
+  showLocalNotification = (title, body, swRegistration) => {
+    const options = {
+      body
+      // here you can add more properties like icon, image, vibrate, etc.
+    };
+    // TODO we need access to the SW registration object here
+    swRegistration.showNotification(title, options);
+  };
 }
