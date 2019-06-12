@@ -22,7 +22,22 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
+              },
+              {
+                "glob": "**/*.svg",
+                "input": "node_modules/@ionic/angular/dist/ionic/svg",
+                "output": "./svg"
+              },
+              {
+                "glob": "**/*-sw.js",
+                "input": "src/app/sw",
+                "output": "/"
+              }
             ],
             "styles": ["src/styles.css"],
             "scripts": []
