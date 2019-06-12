@@ -1,19 +1,30 @@
 {
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
+  "appData": {
+    "version": "0.0.1",
+    "changelog": "First PWA push tests"
+  },
   "assetGroups": [
     {
       "name": "app",
       "installMode": "prefetch",
+      "updateMode": "prefetch",
       "resources": {
         "files": [
           "/favicon.ico",
           "/index.html",
           "/*.css",
-          "/*.js"
+          "/vendor.*.js",
+          "/main.*.js",
+          "/polyfills.*.js",
+          "/runtime.*.js",
+          "/*.js",
+          "!/*-sw.js"
         ]
       }
-    }, {
+    },
+    {
       "name": "assets",
       "installMode": "lazy",
       "updateMode": "prefetch",
@@ -21,7 +32,8 @@
         "files": [
           "/assets/**",
           "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
-        ]
+        ],
+        "urls": ["https://fonts.googleapis.com/**"]
       }
     }
   ]
