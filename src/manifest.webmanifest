@@ -1,6 +1,7 @@
 {
-  "name": "angular-meetup-pwa",
-  "short_name": "angular-meetup-pwa",
+  "name": "Angular Meetup PWA",
+  "short_name": "Angular Meetup PWA",
+  "description": "⚡ Small yet awesome PWA demo app that demonstrates some push notification magic ⚡",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
