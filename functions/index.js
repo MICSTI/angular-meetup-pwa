@@ -1,8 +1,27 @@
-const functions = require('firebase-functions');
+const functions = require("firebase-functions");
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
+exports.hello = functions.https.onRequest((request, response) => {
+  response.send("Hello from the Angular Meetup PWA!");
+});
+
+exports.addSubscription = functions.https.onRequest((request, response) => {
+  response.send("Implement me!");
+});
+
+exports.getSubscriptions = functions.https.onRequest((request, response) => {
+  response.send("Implement me!");
+});
+
+exports.removeSubscription = functions.htttps.onRequest((request, response) => {
+  response.send("Implement me!");
+});
+
+exports.clearAllSubscriptions = functions.https.onRequest(
+  (request, response) => {
+    response.send("Implement me!");
+  }
+);
+
+exports.sendPushMessage = functions.https.onRequest((request, response) => {
+  response.send("Implement me!");
+});
