@@ -1,9 +1,13 @@
 import { Injectable } from "@angular/core";
 import * as firebase from "firebase/app";
 
-@Injectable
+@Injectable({
+  providedIn: "root"
+})
 export class MessagingService {
-  private messaging = firebase.messaging.Messaging;
+  private messaging = firebase.messaging();
+
+  private tokenSent = false;
 
   constructor() {
     this.messaging.usePublicVapidKey(
@@ -18,49 +22,59 @@ export class MessagingService {
 
         // Get Instance ID token. Initially this makes a network call, once retrieved
         // subsequent calls to getToken will return from cache.
-        messaging
+        this.messaging
           .getToken()
           .then(currentToken => {
             if (currentToken) {
-              sendTokenToServer(currentToken);
-              updateUIForPushEnabled(currentToken);
+              this.sendTokenToServer(currentToken);
+              this.updateUIForPushEnabled(currentToken);
             } else {
               // Show permission request.
               console.log(
                 "No Instance ID token available. Request permission to generate one."
               );
               // Show permission UI.
-              updateUIForPushPermissionRequired();
-              setTokenSentToServer(false);
+              this.updateUIForPushPermissionRequired();
+              this.tokenSent = false;
             }
           })
           .catch(err => {
             console.log("An error occurred while retrieving token. ", err);
-            showToken("Error retrieving Instance ID token. ", err);
-            setTokenSentToServer(false);
+            this.tokenSent = false;
           });
 
         // Callback fired if Instance ID token is updated.
-        messaging.onTokenRefresh(() => {
-          messaging
+        this.messaging.onTokenRefresh(() => {
+          this.messaging
             .getToken()
             .then(refreshedToken => {
               console.log("Token refreshed.");
               // Indicate that the new Instance ID token has not yet been sent to the
               // app server.
-              setTokenSentToServer(false);
+              this.tokenSent = false;
               // Send Instance ID token to app server.
-              sendTokenToServer(refreshedToken);
+              this.sendTokenToServer(refreshedToken);
               // ...
             })
             .catch(err => {
               console.log("Unable to retrieve refreshed token ", err);
-              showToken("Unable to retrieve refreshed token ", err);
             });
         });
       } else {
         console.log("Unable to get permission to notify.");
       }
     });
+  }
+
+  private sendTokenToServer(token) {
+    // TODO implement
+  }
+
+  private updateUIForPushEnabled(token) {
+    // TODO implement
+  }
+
+  private updateUIForPushPermissionRequired() {
+    // TODO implement
   }
 }
