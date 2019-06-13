@@ -1,27 +1,42 @@
 const functions = require("firebase-functions");
 
-exports.hello = functions.https.onRequest((request, response) => {
-  response.send("Hello from the Angular Meetup PWA!");
+// The Firebase Admin SDK to access the Firebase Realtime Database.
+const admin = require("firebase-admin");
+admin.initializeApp();
+
+exports.hello = functions.https.onRequest((req, res) => {
+  res.send("Hello from the Angular Meetup PWA!");
 });
 
-exports.addSubscription = functions.https.onRequest((request, response) => {
-  response.send("Implement me!");
-});
+exports.addSubscription = functions.https.onRequest(async (req, res) => {
+  const data = req.body.data;
 
-exports.getSubscriptions = functions.https.onRequest((request, response) => {
-  response.send("Implement me!");
-});
-
-exports.removeSubscription = functions.htttps.onRequest((request, response) => {
-  response.send("Implement me!");
-});
-
-exports.clearAllSubscriptions = functions.https.onRequest(
-  (request, response) => {
-    response.send("Implement me!");
+  if (!data) {
+    return res.status(400).json({
+      message: "Missing body data"
+    });
   }
-);
 
-exports.sendPushMessage = functions.https.onRequest((request, response) => {
-  response.send("Implement me!");
+  const snapshot = await admin
+    .database()
+    .ref("/subscriptions")
+    .push(data);
+
+  res.status(201).json(snapshot.ref);
+});
+
+exports.getSubscriptions = functions.https.onRequest((req, res) => {
+  res.send("Implement me!");
+});
+
+exports.removeSubscription = functions.htttps.onRequest((req, res) => {
+  res.send("Implement me!");
+});
+
+exports.clearAllSubscriptions = functions.https.onRequest((req, res) => {
+  res.send("Implement me!");
+});
+
+exports.sendPushMessage = functions.https.onRequest((req, res) => {
+  res.send("Implement me!");
 });
