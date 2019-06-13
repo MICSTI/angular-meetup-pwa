@@ -11,6 +11,17 @@ const fetchSubscriptions = async () => {
     .once("value");
 };
 
+const fetchRandomSubscription = async () => {
+  const subscriptions = await fetchSubscriptions();
+
+  if (subscriptions.length <= 0) {
+    return null;
+  }
+
+  const randIdx = Math.floor(Math.random() * subscriptions.length);
+  return subscriptions[randIdx];
+};
+
 exports.hello = functions.https.onRequest((req, res) => {
   res.send("Hello from the Angular Meetup PWA!");
 });
@@ -54,8 +65,13 @@ exports.removeSubscription = functions.https.onRequest((req, res) => {
   res.send("Implement me!");
 });
 
-exports.clearAllSubscriptions = functions.https.onRequest((req, res) => {
-  res.send("Implement me!");
+exports.clearAllSubscriptions = functions.https.onRequest(async (req, res) => {
+  const snapshot = await admin
+    .database()
+    .ref("/subscriptions")
+    .remove();
+
+  return res.status(204).send();
 });
 
 exports.sendPushMessage = functions.https.onRequest((req, res) => {
