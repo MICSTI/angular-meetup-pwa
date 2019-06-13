@@ -4,6 +4,11 @@ import { environment } from "../environments/environment";
 
 const firebaseConfig = environment.firebase || {};
 
+// message listener
+self.addEventListener("message", event => {
+  console.log("Notification SW received message:", event.data);
+});
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
