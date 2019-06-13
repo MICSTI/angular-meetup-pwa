@@ -12,6 +12,13 @@ export const environment = {
     storageBucket: "FIREBASE_STORAGE_BUCKET",
     messagingSenderId: "FIREBASE_MESSAGE_SENDER_ID",
     appId: "FIREBASE_APP_ID"
+  },
+  apiUrl: {
+    addSubscription: "API_URL_ADD_SUBSCRIPTION_API",
+    removeSubscription: "API_URL_REMOVE_SUBSCRIPTION",
+    getSubscriptions: "API_URL_GET_SUBSCRIPTIONS",
+    clearAllSubscripts: "API_URL_CLEAR_ALL_SUBSCRIPTIONS",
+    sendPushMessage: "API_URL_SEND_PUSH_MESSAGE"
   }
 };
 

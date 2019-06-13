@@ -22,6 +22,19 @@ const fetchRandomSubscription = async () => {
   return subscriptions[randIdx];
 };
 
+const sendSinglePushMessage = async (token, data) => {
+  const message = {
+    data,
+    token
+  };
+
+  try {
+    return await admin.messaging().send(message);
+  } catch (err) {
+    throw err;
+  }
+};
+
 exports.hello = functions.https.onRequest((req, res) => {
   res.send("Hello from the Angular Meetup PWA!");
 });
