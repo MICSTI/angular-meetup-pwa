@@ -20,7 +20,7 @@ messaging.setBackgroundMessageHandler(payload => {
   // however, the actual content will come from the Webtask
   const notificationTitle = "The first notification";
   const notificationOptions = {
-    icon: "/assets/images/logo-128.png"
+    icon: "/assets/icons/logo-128x128.png"
   };
   return self.registration.showNotification(
     notificationTitle,
