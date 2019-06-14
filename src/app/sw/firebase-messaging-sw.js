@@ -1,8 +1,9 @@
-// Firebase App (the core Firebase SDK) is always required and must be listed first
-import * as firebase from "firebase/app";
-import { environment } from "../environments/environment";
-
-const firebaseConfig = environment.firebase || {};
+// Give the service worker access to Firebase Messaging.
+// Note that you can only use Firebase Messaging here, other Firebase libraries
+// are not available in the service worker.
+importScripts("https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js");
+importScripts("sw-firebase-config.js");
 
 // message listener
 self.addEventListener("message", event => {
@@ -17,6 +18,7 @@ messaging.setBackgroundMessageHandler(payload => {
   console.log("Received background message ", payload);
   // here you can override some options describing what's in the message;
   // however, the actual content will come from the Webtask
+  const notificationTitle = "The first notification";
   const notificationOptions = {
     icon: "/assets/images/logo-128.png"
   };

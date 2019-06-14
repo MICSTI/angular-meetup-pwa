@@ -1,16 +1,22 @@
 import { Injectable } from "@angular/core";
 import * as firebase from "firebase/app";
+import "@firebase/messaging";
 import { SubscriptionService } from "./subscription.service";
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: "root"
 })
 export class MessagingService {
-  private messaging = firebase.messaging();
+  private messaging = null;
 
   private tokenSent = false;
 
   constructor(private subscriptionService: SubscriptionService) {
+    const firebaseConfig = environment.firebase || {};
+    firebase.initializeApp(firebaseConfig);
+
+    this.messaging = firebase.messaging();
     this.messaging.usePublicVapidKey(
       "BPuhdyzFmNexAkV0yjYVbyE4EFz89OBcRWZpzOAbBYsQbIpkdgv0UVuvOoSGk79XPyr_4l0GusCC96L-0aiaEmY"
     );
@@ -27,6 +33,7 @@ export class MessagingService {
           .getToken()
           .then(currentToken => {
             if (currentToken) {
+              console.log("current token", currentToken);
               this.sendTokenToServer(currentToken);
               this.updateUIForPushEnabled(currentToken);
             } else {
@@ -69,7 +76,7 @@ export class MessagingService {
 
   private sendTokenToServer(token) {
     this.subscriptionService.addSubscription(token).subscribe(res => {
-      console.log("addSubscription res", res);
+      console.log("token successfully sent to server");
     });
   }
 

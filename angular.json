@@ -37,6 +37,11 @@
                 "glob": "**/*-sw.js",
                 "input": "src/app/sw",
                 "output": "/"
+              },
+              {
+                "glob": "**/*-firebase-config.js",
+                "input": "src/app/sw",
+                "output": "/"
               }
             ],
             "styles": ["src/styles.css"],

@@ -5,6 +5,23 @@
     "version": "0.0.1",
     "changelog": "First PWA push tests"
   },
+  "dataGroups": [
+    {
+      "name": "api",
+      "urls": [
+        "https://us-central1-angular-meetup-pwa.cloudfunctions.net/addSubscription",
+        "https://us-central1-angular-meetup-pwa.cloudfunctions.net/removeSubscription",
+        "https://us-central1-angular-meetup-pwa.cloudfunctions.net/getSubscriptions",
+        "https://us-central1-angular-meetup-pwa.cloudfunctions.net/clearAllSubscriptions",
+        "https://us-central1-angular-meetup-pwa.cloudfunctions.net/sendPushMessage"
+      ],
+      "cacheConfig": {
+        "maxSize": 0,
+        "maxAge": "0u",
+        "strategy": "freshness"
+      }
+    }
+  ],
   "assetGroups": [
     {
       "name": "app",

@@ -1,5 +1,19 @@
 const functions = require("firebase-functions");
 
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+
+const app = express();
+
+// set up body parser
+app.use(bodyParser.json());
+app.use(bodyParser.json({ type: "application/vnd.api+json" }));
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Automatically allow cross-origin requests
+app.use(cors({ origin: true }));
+
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 const admin = require("firebase-admin");
 admin.initializeApp();
@@ -35,17 +49,11 @@ const sendSinglePushMessage = async (token, data) => {
   }
 };
 
-exports.hello = functions.https.onRequest((req, res) => {
+app.get("/hello", (req, res) => {
   res.send("Hello from the Angular Meetup PWA!");
 });
 
-exports.addSubscription = functions.https.onRequest(async (req, res) => {
-  if (req.method !== "POST") {
-    return res.status(400).json({
-      message: "No handler for request method " + req.method
-    });
-  }
-
+app.post("/addSubscription", async (req, res) => {
   if (req.get("content-type") !== "application/json") {
     return res.status(400).json({
       message: "Only Content-Type application/json is supported"
@@ -53,6 +61,8 @@ exports.addSubscription = functions.https.onRequest(async (req, res) => {
   }
 
   const data = req.body.data;
+
+  console.log("body data", data);
 
   if (!data) {
     return res.status(400).json({
@@ -68,17 +78,17 @@ exports.addSubscription = functions.https.onRequest(async (req, res) => {
   return res.status(201).send();
 });
 
-exports.getSubscriptions = functions.https.onRequest(async (req, res) => {
+app.get("/getSubscriptions", async (req, res) => {
   const subscriptions = await fetchSubscriptions();
 
   return res.status(200).json(subscriptions);
 });
 
-exports.removeSubscription = functions.https.onRequest((req, res) => {
+app.post("/removeSubscription", (req, res) => {
   res.send("Implement me!");
 });
 
-exports.clearAllSubscriptions = functions.https.onRequest(async (req, res) => {
+app.post("/clearAllSubscriptions", async (req, res) => {
   const snapshot = await admin
     .database()
     .ref("/subscriptions")
@@ -87,6 +97,9 @@ exports.clearAllSubscriptions = functions.https.onRequest(async (req, res) => {
   return res.status(204).send();
 });
 
-exports.sendPushMessage = functions.https.onRequest((req, res) => {
+app.post("/sendPushMessage", (req, res) => {
   res.send("Implement me!");
 });
+
+// Expose Express API as a single Cloud Function:
+exports.api = functions.https.onRequest(app);
