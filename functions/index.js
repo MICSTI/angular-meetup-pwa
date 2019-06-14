@@ -36,6 +36,26 @@ const fetchRandomSubscription = async () => {
   return subscriptions[randIdx];
 };
 
+const tokenExists = async token => {
+  let exists = false;
+
+  const snapshot = await admin
+    .database()
+    .ref("/subscriptions")
+    .orderByKey()
+    .once("value");
+
+  snapshot.forEach(childSnapshot => {
+    const value = childSnapshot.val();
+
+    if (value.token === token) {
+      exists = true;
+    }
+  });
+
+  return exists;
+};
+
 const sendSinglePushMessage = async (token, data) => {
   const message = {
     data,
@@ -66,6 +86,12 @@ app.post("/addSubscription", async (req, res) => {
     return res.status(400).json({
       message: "Missing body data"
     });
+  }
+
+  const tokenAlreadyExists = await tokenExists(data.token);
+
+  if (tokenAlreadyExists) {
+    return res.status(204).send();
   }
 
   const snapshot = await admin
