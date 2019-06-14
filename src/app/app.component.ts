@@ -12,4 +12,8 @@ export class AppComponent {
   public requestPermission() {
     this.messagingService.requestNotificationPermission();
   }
+
+  public triggerPushNotification() {
+    this.messagingService.triggerPushNotification();
+  }
 }

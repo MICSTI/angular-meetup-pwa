@@ -10,7 +10,7 @@ import { environment } from "../../environments/environment";
 export class MessagingService {
   private messaging = null;
 
-  private tokenSent = false;
+  private notificationToken = null;
 
   constructor(private subscriptionService: SubscriptionService) {
     const firebaseConfig = environment.firebase || {};
@@ -20,6 +20,14 @@ export class MessagingService {
     this.messaging.usePublicVapidKey(
       "BPuhdyzFmNexAkV0yjYVbyE4EFz89OBcRWZpzOAbBYsQbIpkdgv0UVuvOoSGk79XPyr_4l0GusCC96L-0aiaEmY"
     );
+  }
+
+  public triggerPushNotification() {
+    this.subscriptionService
+      .triggerPushNotification(this.notificationToken)
+      .subscribe(res => {
+        console.log("successfully triggered push notification");
+      });
   }
 
   public requestNotificationPermission() {
@@ -33,7 +41,7 @@ export class MessagingService {
           .getToken()
           .then(currentToken => {
             if (currentToken) {
-              console.log("current token", currentToken);
+              this.notificationToken = currentToken;
               this.sendTokenToServer(currentToken);
               this.updateUIForPushEnabled(currentToken);
             } else {
@@ -43,12 +51,10 @@ export class MessagingService {
               );
               // Show permission UI.
               this.updateUIForPushPermissionRequired();
-              this.tokenSent = false;
             }
           })
           .catch(err => {
             console.log("An error occurred while retrieving token. ", err);
-            this.tokenSent = false;
           });
 
         // Callback fired if Instance ID token is updated.
@@ -56,10 +62,10 @@ export class MessagingService {
           this.messaging
             .getToken()
             .then(refreshedToken => {
+              this.notificationToken = refreshedToken;
               console.log("Token refreshed.");
               // Indicate that the new Instance ID token has not yet been sent to the
               // app server.
-              this.tokenSent = false;
               // Send Instance ID token to app server.
               this.sendTokenToServer(refreshedToken);
               // ...

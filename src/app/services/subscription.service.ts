@@ -34,4 +34,20 @@ export class SubscriptionService {
   public clearAllSubscriptions(): Observable<any> {
     return this.http.get(environment.apiUrl.clearAllSubscripts);
   }
+
+  public triggerPushNotification(token): Observable<any> {
+    const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+    const body = {
+      data: {
+        token
+      }
+    };
+
+    return this.http.post(
+      environment.apiUrl.sendPushMessage,
+      JSON.stringify(body),
+      { headers }
+    );
+  }
 }

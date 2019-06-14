@@ -62,8 +62,6 @@ app.post("/addSubscription", async (req, res) => {
 
   const data = req.body.data;
 
-  console.log("body data", data);
-
   if (!data) {
     return res.status(400).json({
       message: "Missing body data"
@@ -98,15 +96,26 @@ app.post("/clearAllSubscriptions", async (req, res) => {
 });
 
 app.post("/sendPushMessage", async (req, res) => {
-  // get the first token
-  const subscriptions = await fetchSubscriptions();
+  if (req.get("content-type") !== "application/json") {
+    return res.status(400).json({
+      message: "Only Content-Type application/json is supported"
+    });
+  }
 
-  const sendPush = await sendSinglePushMessage(subscriptions[0].token, {
-    title: "The first notification",
-    message: "Hello!!!"
-  });
+  const token = req.body.data.token;
 
-  return res.status(200).send();
+  try {
+    await sendSinglePushMessage(token, {
+      title: "Hi there!",
+      message: "Hello!!!"
+    });
+
+    return res.status(200).send();
+  } catch (ex) {
+    return res.status(400).json({
+      message: ex.message
+    });
+  }
 });
 
 // Expose Express API as a single Cloud Function:
