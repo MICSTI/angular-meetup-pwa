@@ -97,8 +97,16 @@ app.post("/clearAllSubscriptions", async (req, res) => {
   return res.status(204).send();
 });
 
-app.post("/sendPushMessage", (req, res) => {
-  res.send("Implement me!");
+app.post("/sendPushMessage", async (req, res) => {
+  // get the first token
+  const subscriptions = await fetchSubscriptions();
+
+  const sendPush = await sendSinglePushMessage(subscriptions[0].token, {
+    title: "The first notification",
+    message: "Hello!!!"
+  });
+
+  return res.status(200).send();
 });
 
 // Expose Express API as a single Cloud Function:
