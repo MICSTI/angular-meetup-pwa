@@ -16,6 +16,6 @@ export class AppComponent {
   }
 
   public requestPermission() {
-    this.messagingService.requestNotificationPermission();
+    this.messagingService.requestNotificationPermission(this.name);
   }
 }

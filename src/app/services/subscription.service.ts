@@ -9,12 +9,13 @@ import { environment } from "../../environments/environment";
 export class SubscriptionService {
   constructor(private http: HttpClient) {}
 
-  public addSubscription(subscriptionToken): Observable<any> {
+  public addSubscription(subscriptionToken, name): Observable<any> {
     const headers = new HttpHeaders().set("Content-Type", "application/json");
 
     const body = {
       data: {
-        token: subscriptionToken
+        token: subscriptionToken,
+        name
       }
     };
 

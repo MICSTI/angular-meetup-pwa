@@ -30,7 +30,7 @@ export class MessagingService {
       });
   }
 
-  public requestNotificationPermission() {
+  public requestNotificationPermission(name: string) {
     Notification.requestPermission().then(permission => {
       if (permission === "granted") {
         console.log("Notification permission granted.");
@@ -42,7 +42,7 @@ export class MessagingService {
           .then(currentToken => {
             if (currentToken) {
               this.notificationToken = currentToken;
-              this.sendTokenToServer(currentToken);
+              this.sendTokenToServer(currentToken, name);
               this.updateUIForPushEnabled(currentToken);
             } else {
               // Show permission request.
@@ -67,7 +67,7 @@ export class MessagingService {
               // Indicate that the new Instance ID token has not yet been sent to the
               // app server.
               // Send Instance ID token to app server.
-              this.sendTokenToServer(refreshedToken);
+              this.sendTokenToServer(refreshedToken, name);
               // ...
             })
             .catch(err => {
@@ -80,8 +80,8 @@ export class MessagingService {
     });
   }
 
-  private sendTokenToServer(token) {
-    this.subscriptionService.addSubscription(token).subscribe(res => {
+  private sendTokenToServer(token, name) {
+    this.subscriptionService.addSubscription(token, name).subscribe(res => {
       console.log("token successfully sent to server");
     });
   }
