@@ -1,0 +1,23 @@
+<div class="registerContainer">
+  <div class="formRow">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        placeholder="Nice to meet you!"
+        [(ngModel)]="name"
+        required
+      />
+    </mat-form-field>
+  </div>
+  <div class="formRow">
+    <button
+      mat-flat-button
+      (click)="requestPermission()"
+      [disabled]="!registerButtonEnabled()"
+      color="primary"
+    >
+      Register
+    </button>
+  </div>
+</div>

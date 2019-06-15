@@ -13,9 +13,17 @@ import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
 import { MessagingService } from "./services/messaging.service";
 import { SubscriptionService } from "./services/subscription.service";
+import { BoardComponent } from "./board/board.component";
+import { RegisterComponent } from "./register/register.component";
+import { NotFoundComponent } from "./notfound/notfound.component";
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    BoardComponent,
+    RegisterComponent,
+    NotFoundComponent
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
