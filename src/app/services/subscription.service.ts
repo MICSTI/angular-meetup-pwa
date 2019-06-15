@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "../../environments/environment";
+import { Subscription } from "../model/Subscription";
 
 @Injectable({
   providedIn: "root"
@@ -9,13 +10,13 @@ import { environment } from "../../environments/environment";
 export class SubscriptionService {
   constructor(private http: HttpClient) {}
 
-  public addSubscription(subscriptionToken, name): Observable<any> {
+  public addSubscription(subscription): Observable<any> {
     const headers = new HttpHeaders().set("Content-Type", "application/json");
 
     const body = {
       data: {
-        token: subscriptionToken,
-        name
+        token: subscription.token,
+        name: subscription.name
       }
     };
 
@@ -28,20 +29,21 @@ export class SubscriptionService {
     );
   }
 
-  public getSubscriptions(): Observable<any> {
-    return this.http.get(environment.apiUrl.getSubscriptions);
+  public getSubscriptions(): Observable<Subscription[]> {
+    return this.http.get<Subscription[]>(environment.apiUrl.getSubscriptions);
   }
 
   public clearAllSubscriptions(): Observable<any> {
     return this.http.get(environment.apiUrl.clearAllSubscripts);
   }
 
-  public triggerPushNotification(token): Observable<any> {
+  public triggerPushNotification(subscription): Observable<any> {
     const headers = new HttpHeaders().set("Content-Type", "application/json");
 
     const body = {
       data: {
-        token
+        token: subscription.token,
+        name: subscription.name
       }
     };
 

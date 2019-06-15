@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
+import { MatListModule } from "@angular/material/list";
 import { MatFormFieldModule } from "@angular/material/form-field";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -32,6 +33,7 @@ import { NotFoundComponent } from "./notfound/notfound.component";
     FormsModule,
     MatButtonModule,
     MatFormFieldModule,
+    MatListModule,
     MatInputModule,
     ServiceWorkerModule.register("/main-sw.js", {
       enabled: environment.production

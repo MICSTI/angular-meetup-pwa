@@ -1,3 +1,14 @@
-<p>
-  board works!
-</p>
+<div class="subscriptionsContainer">
+  <mat-list role="list" class="subscriptionList">
+    <mat-list-item role="listitem" *ngFor="let subscription of subscriptions">
+      <span class="subscriptionName">{{ subscription.name }}</span>
+      <button
+        mat-flat-button
+        (click)="sendNotification(subscription)"
+        color="primary"
+      >
+        Send notification
+      </button>
+    </mat-list-item>
+  </mat-list>
+</div>

@@ -103,9 +103,24 @@ app.post("/addSubscription", async (req, res) => {
 });
 
 app.get("/getSubscriptions", async (req, res) => {
-  const subscriptions = await fetchSubscriptions();
+  const subscriptionArray = [];
 
-  return res.status(200).json(subscriptions);
+  const snapshot = await admin
+    .database()
+    .ref("/subscriptions")
+    .orderByKey()
+    .once("value");
+
+  snapshot.forEach(childSnapshot => {
+    const value = childSnapshot.val();
+
+    subscriptionArray.push({
+      name: value.name,
+      token: value.token
+    });
+  });
+
+  return res.status(200).json(subscriptionArray);
 });
 
 app.post("/removeSubscription", (req, res) => {
@@ -128,11 +143,11 @@ app.post("/sendPushMessage", async (req, res) => {
     });
   }
 
-  const token = req.body.data.token;
+  const { token, name } = req.body.data;
 
   try {
     await sendSinglePushMessage(token, {
-      title: "Hi there!",
+      title: `Hi ${name}`,
       message: "Hello!!!"
     });
 
