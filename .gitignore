@@ -51,3 +51,4 @@ src/environments/environment.prod.ts
 # Firebase
 .firebase/
 src/app/sw/sw-firebase-config.js
+src/environments/environment.ts
