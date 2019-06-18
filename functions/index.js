@@ -139,7 +139,7 @@ app.post("/removeSubscription", (req, res) => {
   res.send("Implement me!");
 });
 
-app.post("/clearAllSubscriptions", async (req, res) => {
+app.delete("/clearAllSubscriptions", async (req, res) => {
   const snapshot = await admin
     .database()
     .ref("/subscriptions")
