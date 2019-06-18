@@ -1,5 +1,5 @@
-.subscriptionContainer {
-  padding: 10%;
+mat-card {
+  margin-bottom: 24px;
 }
 
 .subscriptionName {

@@ -13,10 +13,10 @@ export class BoardComponent implements OnInit {
   constructor(private subscriptionService: SubscriptionService) {}
 
   ngOnInit() {
-    this.refresh();
+    this.refreshSubscriptions();
   }
 
-  refresh() {
+  refreshSubscriptions() {
     this.subscriptionService.getSubscriptions().subscribe(data => {
       this.subscriptions = data;
     });
@@ -34,5 +34,11 @@ export class BoardComponent implements OnInit {
       .subscribe(res => {
         console.log("push notification triggered");
       });
+  }
+
+  deleteSubscriptions() {
+    this.subscriptionService.clearAllSubscriptions().subscribe(res => {
+      this.subscriptions = [];
+    });
   }
 }

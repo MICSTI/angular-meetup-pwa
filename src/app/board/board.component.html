@@ -22,15 +22,36 @@
   </mat-card-content>
 </mat-card>
 
-<mat-list role="list" class="subscriptionList">
-  <mat-list-item role="listitem" *ngFor="let subscription of subscriptions">
-    <span class="subscriptionName">{{ subscription.name }}</span>
-    <button
-      mat-flat-button
-      (click)="sendNotification(subscription)"
-      color="primary"
-    >
-      Send notification
+<mat-card *ngIf="subscriptions && subscriptions.length > 0">
+  <mat-card-subtitle>Delete subscriptions</mat-card-subtitle>
+  <mat-card-content>
+    <button mat-flat-button (click)="deleteSubscriptions()">
+      Delete
     </button>
-  </mat-list-item>
-</mat-list>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <button mat-flat-button (click)="refreshSubscriptions()" color="accent">
+    Refresh
+  </button>
+  <mat-list
+    role="list"
+    class="subscriptionList"
+    *ngIf="subscriptions && subscriptions.length > 0"
+  >
+    <mat-list-item role="listitem" *ngFor="let subscription of subscriptions">
+      <span class="subscriptionName">{{ subscription.name }}</span>
+      <button
+        mat-flat-button
+        (click)="sendNotification(subscription)"
+        color="primary"
+      >
+        Send notification
+      </button>
+    </mat-list-item>
+  </mat-list>
+  <span *ngIf="!subscriptions || subscriptions.length === 0"
+    >No subscriptions yet</span
+  >
+</mat-card>
