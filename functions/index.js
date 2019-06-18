@@ -25,8 +25,8 @@ const fetchSubscriptions = async () => {
     .once("value");
 };
 
-const fetchRandomSubscription = async () => {
-  const subscriptions = await fetchSubscriptions();
+const getRandomSubscription = async () => {
+  const subscriptions = await getAllSubscriptions();
 
   if (subscriptions.length <= 0) {
     return null;
@@ -34,6 +34,27 @@ const fetchRandomSubscription = async () => {
 
   const randIdx = Math.floor(Math.random() * subscriptions.length);
   return subscriptions[randIdx];
+};
+
+const getAllSubscriptions = async () => {
+  const subscriptions = [];
+
+  const snapshot = await admin
+    .database()
+    .ref("/subscriptions")
+    .orderByKey()
+    .once("value");
+
+  snapshot.forEach(childSnapshot => {
+    const value = childSnapshot.val();
+
+    subscriptions.push({
+      token: value.token,
+      name: value.name
+    });
+  });
+
+  return subscriptions;
 };
 
 const tokenExists = async token => {
@@ -103,24 +124,15 @@ app.post("/addSubscription", async (req, res) => {
 });
 
 app.get("/getSubscriptions", async (req, res) => {
-  const subscriptionArray = [];
+  const subscriptions = await getAllSubscriptions();
 
-  const snapshot = await admin
-    .database()
-    .ref("/subscriptions")
-    .orderByKey()
-    .once("value");
+  return res.status(200).json(subscriptions);
+});
 
-  snapshot.forEach(childSnapshot => {
-    const value = childSnapshot.val();
+app.get("/getRandom", async (req, res) => {
+  const randomSubscription = await getRandomSubscription();
 
-    subscriptionArray.push({
-      name: value.name,
-      token: value.token
-    });
-  });
-
-  return res.status(200).json(subscriptionArray);
+  return res.status(200).json(randomSubscription);
 });
 
 app.post("/removeSubscription", (req, res) => {
