@@ -34,7 +34,7 @@ export class SubscriptionService {
   }
 
   public clearAllSubscriptions(): Observable<any> {
-    return this.http.delete(environment.apiUrl.clearAllSubscripts);
+    return this.http.delete(environment.apiUrl.clearAllSubscriptions);
   }
 
   public getRandomSubscription(): Observable<Subscription> {
