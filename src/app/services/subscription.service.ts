@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { environment } from "../../environments/environment";
 import { Subscription } from "../model/Subscription";
 
@@ -34,7 +34,13 @@ export class SubscriptionService {
   }
 
   public clearAllSubscriptions(): Observable<any> {
-    return this.http.get(environment.apiUrl.clearAllSubscripts);
+    return this.http.delete(environment.apiUrl.clearAllSubscripts);
+  }
+
+  public getRandomSubscription(): Observable<Subscription> {
+    return this.http.get<Subscription>(
+      environment.apiUrl.getRandomSubscription
+    );
   }
 
   public triggerPushNotification(subscription): Observable<any> {

@@ -8,6 +8,7 @@ import { SubscriptionService } from "../services/subscription.service";
 })
 export class BoardComponent implements OnInit {
   subscriptions = [];
+  winner = null;
 
   constructor(private subscriptionService: SubscriptionService) {}
 
@@ -18,6 +19,12 @@ export class BoardComponent implements OnInit {
   refresh() {
     this.subscriptionService.getSubscriptions().subscribe(data => {
       this.subscriptions = data;
+    });
+  }
+
+  selectWinner() {
+    this.subscriptionService.getRandomSubscription().subscribe(winner => {
+      this.winner = winner;
     });
   }
 
