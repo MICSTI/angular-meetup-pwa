@@ -1,18 +1,18 @@
-import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
-import { BoardComponent } from "./board/board.component";
-import { RegisterComponent } from "./register/register.component";
-import { NotFoundComponent } from "./notfound/notfound.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AdminComponent } from './admin/admin/admin.component';
+import { RegisterComponent } from './user/register/register.component';
+import { UserComponent } from './user/user/user.component';
 
 const routes: Routes = [
-  { path: "register", component: RegisterComponent },
-  { path: "board", component: BoardComponent },
-  { path: "", redirectTo: "/register", pathMatch: "full" },
-  { path: "**", component: NotFoundComponent }
+  { path: '', component: RegisterComponent },
+  { path: 'user', component: UserComponent },
+  { path: 'admin', component: AdminComponent },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -1,10 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-import { MessagingService } from "../services/messaging.service";
+import { Component, OnInit } from '@angular/core';
+import { MessagingService } from '@core/messaging.service';
 
 @Component({
-  selector: "app-register",
-  templateUrl: "./register.component.html",
-  styleUrls: ["./register.component.css"]
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
   name: string;
@@ -14,7 +14,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {}
 
   public registerButtonEnabled() {
-    return this.name && this.name.trim() !== "";
+    return this.name && this.name.trim() !== '';
   }
 
   public requestPermission() {
