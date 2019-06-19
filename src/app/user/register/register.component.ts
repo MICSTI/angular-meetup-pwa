@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessagingService } from '@core/messaging.service';
-import { throwError } from 'rxjs';
-import { pluck, tap } from 'rxjs/operators';
+import { pluck } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -14,7 +13,7 @@ import { environment } from 'src/environments/environment';
 export class RegisterComponent implements OnInit {
   name: string;
   sticker: string;
-  url = `http://api.giphy.com/v1/stickers/random?api_key=${
+  url = `https://api.giphy.com/v1/stickers/random?api_key=${
     environment.giphyApiKey
   }&limit=1&tag=cat&rating=g`;
   backupUrl =
@@ -27,13 +26,7 @@ export class RegisterComponent implements OnInit {
   ) {
     this.http
       .get(this.url)
-      .pipe(
-        pluck('data', 'image_original_url'),
-        tap((_) => {
-          throwError(new Error('ERROR'));
-          console.log('TESTEST');
-        })
-      )
+      .pipe(pluck('data', 'image_original_url'))
       .subscribe(
         (sticker: string) => (this.sticker = sticker),
         (error) => (this.sticker = this.backupUrl)

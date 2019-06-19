@@ -1,14 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { database } from 'firebase';
+import { Subscription } from './subscription';
 
 @Injectable()
 export class SubscriptionService {
   constructor(private http: HttpClient) {}
 
-  addSubscription(subscription): Observable<any> {
+  addSubscription(subscription: Subscription): Observable<any> {
     const headers = new HttpHeaders().set(
       'Content-Type',
       'application/json'
@@ -18,6 +18,7 @@ export class SubscriptionService {
       data: {
         token: subscription.token,
         name: subscription.name,
+        sticker: subscription.sticker,
       },
     };
 
@@ -47,7 +48,7 @@ export class SubscriptionService {
   }
 
   triggerPushNotification(
-    subscription,
+    subscription: { token: any },
     data = { title: 'Default title', body: 'Default body' }
   ): Observable<any> {
     const headers = new HttpHeaders().set(
