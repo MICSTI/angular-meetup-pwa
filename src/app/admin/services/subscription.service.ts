@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { database } from 'firebase';
 
 @Injectable()
 export class SubscriptionService {
@@ -45,7 +46,10 @@ export class SubscriptionService {
     );
   }
 
-  triggerPushNotification(subscription): Observable<any> {
+  triggerPushNotification(
+    subscription,
+    data = { title: 'Default title', body: 'Default body' }
+  ): Observable<any> {
     const headers = new HttpHeaders().set(
       'Content-Type',
       'application/json'
@@ -54,7 +58,8 @@ export class SubscriptionService {
     const body = {
       data: {
         token: subscription.token,
-        name: subscription.name,
+        title: data.title,
+        body: data.body,
       },
     };
 
