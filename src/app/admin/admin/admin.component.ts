@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SubscriptionService } from '../services/subscription.service';
+import { SubscriptionService } from '@core/subscription.service';
 
 @Component({
   selector: 'app-admin',

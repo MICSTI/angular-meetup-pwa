@@ -4,3 +4,8 @@
 * {
   font-family: "Open Sans", sans-serif;
 }
+
+html,
+body {
+  background: skyblue;
+}
