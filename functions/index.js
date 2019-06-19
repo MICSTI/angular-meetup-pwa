@@ -18,13 +18,6 @@ app.use(cors({ origin: true }));
 const admin = require("firebase-admin");
 admin.initializeApp();
 
-const fetchSubscriptions = async () => {
-  return await admin
-    .database()
-    .ref("/subscriptions")
-    .once("value");
-};
-
 const getRandomSubscription = async () => {
   const subscriptions = await getAllSubscriptions();
 
