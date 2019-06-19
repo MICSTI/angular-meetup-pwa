@@ -18,6 +18,30 @@ app.use(cors({ origin: true }));
 const admin = require('firebase-admin');
 admin.initializeApp();
 
+const sendSinglePushMessage = async (token, data) => {
+  const message = {
+    token,
+    notification: {
+      title: data.title,
+    },
+    webpush: {
+      headers: {
+        Urgency: 'high',
+      },
+      notification: {
+        body: data.body,
+        requireInteraction: 'true',
+      },
+    },
+  };
+
+  try {
+    return await admin.messaging().send(message);
+  } catch (err) {
+    throw err;
+  }
+};
+
 const getRandomSubscription = async () => {
   const subscriptions = await getAllSubscriptions();
 
@@ -65,9 +89,13 @@ const broadcastMessage = async (messageData, excludedTokens = []) => {
     }
   );
 
-  filteredSubscriptions.forEach(subscription => {
-    await sendSinglePushMessage(subscription.token, messageData);
-  });
+  for (const subscription of filteredSubscriptions) {
+    try {
+      sendSinglePushMessage(subscription.token, messageData);
+    } catch (ex) {
+      console.error('faield to send push notification', ex.message);
+    }
+  }
 
   return true;
 };
@@ -96,30 +124,6 @@ const tokenExists = async (token) => {
   const subscription = await getSubscriptionToToken(token);
 
   return subscription !== null;
-};
-
-const sendSinglePushMessage = async (token, data) => {
-  const message = {
-    token,
-    notification: {
-      title: data.title,
-    },
-    webpush: {
-      headers: {
-        Urgency: 'high',
-      },
-      notification: {
-        body: data.body,
-        requireInteraction: 'true',
-      },
-    },
-  };
-
-  try {
-    return await admin.messaging().send(message);
-  } catch (err) {
-    throw err;
-  }
 };
 
 const broadcastEnabled = async () => {
@@ -275,10 +279,13 @@ app.post('/broadcastMessage', async (req, res) => {
   const { senderToken, title, body } = req.body.data;
 
   try {
-    await broadcastMessage({
-      title,
-      body,
-    }, [senderToken]);
+    await broadcastMessage(
+      {
+        title,
+        body,
+      },
+      [senderToken]
+    );
 
     return res.status(204).send();
   } catch (ex) {
