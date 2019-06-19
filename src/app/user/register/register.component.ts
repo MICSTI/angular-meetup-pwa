@@ -16,8 +16,6 @@ export class RegisterComponent implements OnInit {
   url = `https://api.giphy.com/v1/stickers/random?api_key=${
     environment.giphyApiKey
   }&limit=1&tag=cat&rating=g`;
-  backupUrl =
-    'https://media.giphy.com/media/1iu8uG2cjYFZS6wTxv/giphy.gif';
 
   constructor(
     private messagingService: MessagingService,
@@ -29,7 +27,7 @@ export class RegisterComponent implements OnInit {
       .pipe(pluck('data', 'image_original_url'))
       .subscribe(
         (sticker: string) => (this.sticker = sticker),
-        (error) => (this.sticker = this.backupUrl)
+        (error) => (this.sticker = environment.defaultSticker)
       );
   }
 
