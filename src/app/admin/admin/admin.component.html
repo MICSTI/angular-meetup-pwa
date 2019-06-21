@@ -1,18 +1,27 @@
 <mat-card>
   <mat-card-title>Select winner</mat-card-title>
   <mat-card-content>
-    <button mat-flat-button
-            (click)="selectWinner()"
-            color="primary"
-            *ngIf="!winner">
+    <button
+      mat-flat-button
+      (click)="selectWinner()"
+      color="primary"
+      *ngIf="!winner"
+    >
       Good luck!
     </button>
-    <span *ngIf="winner">
+    <span *ngIf="winner && winnerRevealed">
       <span class="subscriptionName">{{ winner.name }}</span>
-      <button mat-flat-button
-              (click)="sendNotification(winner)"
-              color="primary">
+      <button
+        mat-flat-button
+        (click)="sendWinningNotification(winner)"
+        color="primary"
+      >
         Resend notification
+      </button>
+    </span>
+    <span *ngIf="winner && !winnerRevealed">
+      <button mat-flat-button (click)="revealWinner()" color="accent">
+        Reveal winner
       </button>
     </span>
   </mat-card-content>
@@ -21,31 +30,40 @@
 <mat-card *ngIf="subscriptions && subscriptions.length > 0">
   <mat-card-subtitle>Delete subscriptions</mat-card-subtitle>
   <mat-card-content>
-    <button mat-flat-button
-            (click)="deleteSubscriptions()">
+    <button mat-flat-button (click)="deleteSubscriptions()">
       Delete
     </button>
   </mat-card-content>
 </mat-card>
 
 <mat-card>
-  <button mat-flat-button
-          (click)="refreshSubscriptions()"
-          color="accent">
+  <button
+    mat-flat-button
+    (click)="refreshSubscriptions()"
+    color="accent"
+  >
     Refresh
   </button>
-  <mat-list role="list"
-            class="subscriptionList"
-            *ngIf="subscriptions && subscriptions.length > 0">
-    <mat-list-item role="listitem"
-                   *ngFor="let subscription of subscriptions">
+  <mat-list
+    role="list"
+    class="subscriptionList"
+    *ngIf="subscriptions && subscriptions.length > 0"
+  >
+    <mat-list-item
+      role="listitem"
+      *ngFor="let subscription of subscriptions"
+    >
       <span class="subscriptionName">{{ subscription.name }}</span>
-      <button mat-flat-button
-              (click)="sendNotification(subscription)"
-              color="primary">
+      <button
+        mat-flat-button
+        (click)="sendNotification(subscription)"
+        color="primary"
+      >
         Send notification
       </button>
     </mat-list-item>
   </mat-list>
-  <span *ngIf="!subscriptions || subscriptions.length === 0">No subscriptions yet</span>
+  <span *ngIf="!subscriptions || subscriptions.length === 0">
+    No subscriptions yet
+  </span>
 </mat-card>

@@ -9,10 +9,14 @@ import { SubscriptionService } from './subscription.service';
 export class MessagingService {
   private messaging = null;
   private notificationToken = null;
+  private userName = null;
 
   constructor(private subscriptionService: SubscriptionService) {
     const firebaseConfig = environment.firebase || {};
-    firebase.initializeApp(firebaseConfig);
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
 
     this.messaging = firebase.messaging();
     this.messaging.usePublicVapidKey(
@@ -35,6 +39,7 @@ export class MessagingService {
           .then((currentToken: any) => {
             if (currentToken) {
               this.notificationToken = currentToken;
+              this.userName = name;
               this.sendTokenToServer({
                 token: currentToken,
                 name,
@@ -98,5 +103,9 @@ export class MessagingService {
 
   private updateUIForPushPermissionRequired() {
     // TODO implement
+  }
+
+  public getUserName(): string {
+    return this.userName;
   }
 }

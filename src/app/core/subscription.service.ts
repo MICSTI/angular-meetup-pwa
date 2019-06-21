@@ -70,4 +70,25 @@ export class SubscriptionService {
       { headers }
     );
   }
+
+  sendWinningMessage(subscription: Subscription): Observable<any> {
+    const data = {
+      title: '🏆 Congratulations 🎉',
+      body: `You are the winner, ${subscription.name}!`,
+    };
+
+    return this.triggerPushNotification(subscription, data);
+  }
+
+  sendHelloMessage(
+    subscription: { token: any },
+    senderName: string = 'A user'
+  ): Observable<any> {
+    const data = {
+      title: `🚀 New notification 🎉`,
+      body: `${senderName} says hi 😊`,
+    };
+
+    return this.triggerPushNotification(subscription, data);
+  }
 }

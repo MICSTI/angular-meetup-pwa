@@ -9,6 +9,7 @@ import { SubscriptionService } from '@core/subscription.service';
 export class AdminComponent implements OnInit {
   subscriptions = [];
   winner = null;
+  winnerRevealed = false;
 
   constructor(private subscriptionService: SubscriptionService) {}
 
@@ -27,12 +28,26 @@ export class AdminComponent implements OnInit {
       .getRandomSubscription()
       .subscribe((winner) => {
         this.winner = winner;
+
+        this.sendWinningNotification(this.winner);
+      });
+  }
+
+  revealWinner() {
+    this.winnerRevealed = true;
+  }
+
+  sendWinningNotification(subscription) {
+    this.subscriptionService
+      .sendWinningMessage(subscription)
+      .subscribe((res) => {
+        console.log('winning message sent');
       });
   }
 
   sendNotification(subscription) {
     this.subscriptionService
-      .triggerPushNotification(subscription)
+      .sendHelloMessage(subscription)
       .subscribe((res) => {
         console.log('push notification triggered');
       });
