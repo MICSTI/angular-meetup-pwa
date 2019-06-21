@@ -17,7 +17,12 @@ export class UserComponent implements OnInit {
     this.defaultSticker = environment.defaultSticker;
     this.subscriptions$ = this.db
       .list<Subscription>('subscriptions')
-      .valueChanges();
+      .valueChanges()
+      .pipe
+      // map((subscriptions) => [
+      //   ...subscriptions,
+      // ])
+      ();
   }
 
   ngOnInit() {}
