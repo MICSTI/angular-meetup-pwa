@@ -19,6 +19,10 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 const sendSinglePushMessage = async (token, data) => {
+  if (!token) {
+    return 'No token passed';
+  }
+
   const message = {
     token,
     notification: {

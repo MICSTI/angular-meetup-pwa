@@ -1,20 +1,27 @@
 <div class="container">
-  <mat-card class="example-card"
-            *ngFor="let subscription of subscriptions$ | async">
+  <mat-card
+    class="example-card"
+    *ngFor="let subscription of subscriptions$ | async"
+  >
     <mat-card-header>
       <mat-card-title>{{ subscription.name }}</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
-      <img class="sticker"
-           height="200px"
-           width="200px"
-           [src]="subscription.sticker || defaultSticker">
+      <img
+        class="sticker"
+        height="200px"
+        width="200px"
+        [src]="subscription.sticker || defaultSticker"
+      />
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button
-              color="primary"
-              (click)="sendHelloMessage(subscription)">
+      <button
+        mat-raised-button
+        [disabled]="!subscription.token"
+        color="primary"
+        (click)="sendHelloMessage(subscription)"
+      >
         Say hi
       </button>
     </mat-card-actions>

@@ -13,6 +13,7 @@
       <span class="subscriptionName">{{ winner.name }}</span>
       <button
         mat-flat-button
+        [disabled]="!winner.token"
         (click)="sendWinningNotification(winner)"
         color="primary"
       >
@@ -56,6 +57,7 @@
       <span class="subscriptionName">{{ subscription.name }}</span>
       <button
         mat-flat-button
+        [disabled]="!subscription.token"
         (click)="sendNotification(subscription)"
         color="primary"
       >
