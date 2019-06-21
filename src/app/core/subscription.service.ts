@@ -80,12 +80,13 @@ export class SubscriptionService {
     return this.triggerPushNotification(subscription, data);
   }
 
-  sendLoserMessage(subscription: Subscription): Observable<any> {
+  sendLoserMessage(
+    subscription: Subscription,
+    winnerName: string
+  ): Observable<any> {
     const data = {
       title: 'We have a winner!',
-      body: `Unfortunately it's not you this time, but congratulations to ${
-        subscription.name
-      }! 🎉`,
+      body: `Unfortunately it's not you this time, but congratulations to ${winnerName}! 🎉`,
     };
 
     return this.triggerPushNotification(subscription, data);

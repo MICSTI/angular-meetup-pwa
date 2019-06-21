@@ -61,7 +61,7 @@ export class AdminComponent implements OnInit {
         subscription.token !== winnerSubscription.token
       ) {
         this.subscriptionService
-          .sendLoserMessage(subscription)
+          .sendLoserMessage(subscription, winnerSubscription.name)
           .subscribe((res) => {
             console.log('loser message sent');
           });
