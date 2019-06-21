@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionService } from '@core/subscription.service';
+import { Subscription } from '@core/subscription';
 
 @Component({
   selector: 'app-admin',
@@ -38,11 +39,34 @@ export class AdminComponent implements OnInit {
   }
 
   sendWinningNotification(subscription) {
-    this.subscriptionService
-      .sendWinningMessage(subscription)
-      .subscribe((res) => {
-        console.log('winning message sent');
-      });
+    if (subscription.token) {
+      this.subscriptionService
+        .sendWinningMessage(subscription)
+        .subscribe((res) => {
+          console.log('winning message sent');
+
+          this.informLosers(subscription);
+        });
+    } else {
+      console.log(
+        'could not send winning message because no token exists'
+      );
+    }
+  }
+
+  informLosers(winnerSubscription: Subscription) {
+    for (const subscription of this.subscriptions) {
+      if (
+        subscription.token &&
+        subscription.token !== winnerSubscription.token
+      ) {
+        this.subscriptionService
+          .sendLoserMessage(subscription)
+          .subscribe((res) => {
+            console.log('loser message sent');
+          });
+      }
+    }
   }
 
   sendNotification(subscription) {
