@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessagingService } from '@core/messaging.service';
+import { Subscription } from '@core/subscription';
+import * as firebase from 'firebase/app';
 import { pluck } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
@@ -34,10 +36,17 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {}
 
   requestPermission() {
-    this.messagingService
-      .requestNotificationPermission(this.name, this.sticker)
-      .then(() => {
-        this.router.navigateByUrl('/user');
-      });
+    if (firebase.messaging.isSupported()) {
+      this.messagingService
+        .requestNotificationPermission(this.name, this.sticker)
+        .then(() => {
+          this.router.navigateByUrl('/user');
+        });
+    } else {
+      this.messagingService.sendTokenToServer(
+        new Subscription(this.name, null, this.sticker)
+      );
+      this.router.navigateByUrl('/user');
+    }
   }
 }

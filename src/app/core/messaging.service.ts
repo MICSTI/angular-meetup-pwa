@@ -17,79 +17,92 @@ export class MessagingService {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
-
-    this.messaging = firebase.messaging();
-    this.messaging.usePublicVapidKey(
-      'BPuhdyzFmNexAkV0yjYVbyE4EFz89OBcRWZpzOAbBYsQbIpkdgv0UVuvOoSGk79XPyr_4l0GusCC96L-0aiaEmY'
-    );
+    if (firebase.messaging.isSupported()) {
+      this.messaging = firebase.messaging();
+      this.messaging.usePublicVapidKey(
+        'BPuhdyzFmNexAkV0yjYVbyE4EFz89OBcRWZpzOAbBYsQbIpkdgv0UVuvOoSGk79XPyr_4l0GusCC96L-0aiaEmY'
+      );
+    }
   }
 
   requestNotificationPermission(
     name: string,
     sticker: string
   ): Promise<any> {
-    return Notification.requestPermission().then((permission) => {
-      if (permission === 'granted') {
-        console.log('Notification permission granted.');
+    if (this.messaging) {
+      return Notification.requestPermission()
+        .then((permission) => {
+          if (permission === 'granted') {
+            console.log('Notification permission granted.');
 
-        // Get Instance ID token. Initially this makes a network call, once retrieved
-        // subsequent calls to getToken will return from cache.
-        this.messaging
-          .getToken()
-          .then((currentToken: any) => {
-            if (currentToken) {
-              this.notificationToken = currentToken;
-              this.userName = name;
-              this.sendTokenToServer({
-                token: currentToken,
-                name,
-                sticker,
+            // Get Instance ID token. Initially this makes a network call, once retrieved
+            // subsequent calls to getToken will return from cache.
+            this.messaging
+              .getToken()
+              .then((currentToken: any) => {
+                if (currentToken) {
+                  this.notificationToken = currentToken;
+                  this.userName = name;
+                  this.sendTokenToServer({
+                    token: currentToken,
+                    name,
+                    sticker,
+                  });
+                  this.updateUIForPushEnabled(currentToken);
+                } else {
+                  // Show permission request.
+                  console.log(
+                    'No Instance ID token available. Request permission to generate one.'
+                  );
+                  // Show permission UI.
+                  this.updateUIForPushPermissionRequired();
+                }
+              })
+              .catch((err: any) => {
+                console.log(
+                  'An error occurred while retrieving token. ',
+                  err
+                );
               });
-              this.updateUIForPushEnabled(currentToken);
-            } else {
-              // Show permission request.
-              console.log(
-                'No Instance ID token available. Request permission to generate one.'
-              );
-              // Show permission UI.
-              this.updateUIForPushPermissionRequired();
-            }
-          })
-          .catch((err: any) => {
-            console.log(
-              'An error occurred while retrieving token. ',
-              err
-            );
-          });
 
-        // Callback fired if Instance ID token is updated.
-        this.messaging.onTokenRefresh(() => {
-          this.messaging
-            .getToken()
-            .then((refreshedToken: any) => {
-              this.notificationToken = refreshedToken;
-              console.log('Token refreshed.');
-              // Indicate that the new Instance ID token has not yet been sent to the
-              // app server.
-              // Send Instance ID token to app server.
-              this.sendTokenToServer({
-                token: refreshedToken,
-                name,
-                sticker,
-              });
-              // ...
-            })
-            .catch((err: any) => {
-              console.log('Unable to retrieve refreshed token ', err);
+            // Callback fired if Instance ID token is updated.
+            this.messaging.onTokenRefresh(() => {
+              this.messaging
+                .getToken()
+                .then((refreshedToken: any) => {
+                  this.notificationToken = refreshedToken;
+                  console.log('Token refreshed.');
+                  // Indicate that the new Instance ID token has not yet been sent to the
+                  // app server.
+                  // Send Instance ID token to app server.
+                  this.sendTokenToServer({
+                    token: refreshedToken,
+                    name,
+                    sticker,
+                  });
+                  // ...
+                })
+                .catch((err: any) => {
+                  console.log(
+                    'Unable to retrieve refreshed token ',
+                    err
+                  );
+                });
             });
+          } else {
+            console.log('Unable to get permission to notify.');
+          }
+        })
+        .catch((error) => {
+          console.log('NOT WORKING PUSH!! 💩');
         });
-      } else {
-        console.log('Unable to get permission to notify.');
-      }
-    });
+    } else {
+      console.log('NOTIFICATIONS NOW ALLOWED');
+      return Promise.resolve();
+    }
   }
 
-  private sendTokenToServer(subscription: Subscription) {
+  sendTokenToServer(subscription: Subscription) {
     this.subscriptionService
       .addSubscription(subscription)
       .subscribe((res) => {
