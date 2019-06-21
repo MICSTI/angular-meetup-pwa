@@ -70,4 +70,16 @@ export class SubscriptionService {
       { headers }
     );
   }
+
+  sendHelloMessage(
+    subscription: { token: any },
+    senderName: string
+  ): Observable<any> {
+    const data = {
+      title: `🚀 New notification 🎉`,
+      body: `${senderName} says hi 😊`,
+    };
+
+    return this.triggerPushNotification(subscription, data);
+  }
 }
