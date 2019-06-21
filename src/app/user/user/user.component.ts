@@ -34,7 +34,7 @@ export class UserComponent implements OnInit {
   ngOnInit() {}
 
   sendHelloMessage(subscription: Subscription) {
-    const name = this.messagingService.getUserName() || 'A user';
+    const name = this.messagingService.getUserName() || 'Somebody';
     this.subscriptionService
       .sendHelloMessage(subscription, name)
       .subscribe((res) => {
