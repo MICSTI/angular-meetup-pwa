@@ -71,9 +71,18 @@ export class SubscriptionService {
     );
   }
 
+  sendWinningMessage(subscription: Subscription): Observable<any> {
+    const data = {
+      title: '🏆 Congratulations 🎉',
+      body: `You are the winner, ${subscription.name}!`,
+    };
+
+    return this.triggerPushNotification(subscription, data);
+  }
+
   sendHelloMessage(
     subscription: { token: any },
-    senderName: string
+    senderName: string = 'A user'
   ): Observable<any> {
     const data = {
       title: `🚀 New notification 🎉`,

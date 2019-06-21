@@ -27,12 +27,22 @@ export class AdminComponent implements OnInit {
       .getRandomSubscription()
       .subscribe((winner) => {
         this.winner = winner;
+
+        this.sendWinningNotification(this.winner);
+      });
+  }
+
+  sendWinningNotification(subscription) {
+    this.subscriptionService
+      .sendWinningMessage(subscription)
+      .subscribe((res) => {
+        console.log('winning message sent');
       });
   }
 
   sendNotification(subscription) {
     this.subscriptionService
-      .triggerPushNotification(subscription)
+      .sendHelloMessage(subscription)
       .subscribe((res) => {
         console.log('push notification triggered');
       });
