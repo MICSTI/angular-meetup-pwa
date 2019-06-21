@@ -9,7 +9,7 @@
     >
       Good luck!
     </button>
-    <span *ngIf="winner">
+    <span *ngIf="winner && winnerRevealed">
       <span class="subscriptionName">{{ winner.name }}</span>
       <button
         mat-flat-button
@@ -17,6 +17,11 @@
         color="primary"
       >
         Resend notification
+      </button>
+    </span>
+    <span *ngIf="winner && !winnerRevealed">
+      <button mat-flat-button (click)="revealWinner()" color="accent">
+        Reveal winner
       </button>
     </span>
   </mat-card-content>

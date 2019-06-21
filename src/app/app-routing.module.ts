@@ -7,7 +7,10 @@ import { UserComponent } from './user/user/user.component';
 const routes: Routes = [
   { path: '', component: RegisterComponent },
   { path: 'user', component: UserComponent },
-  { path: 'admin', component: AdminComponent },
+  {
+    path: 'lE7utiq3QzLDNhp6whJqbi6MKZQo0Nzq4t85cUho',
+    component: AdminComponent,
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

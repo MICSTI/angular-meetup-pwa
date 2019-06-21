@@ -9,6 +9,7 @@ import { SubscriptionService } from '@core/subscription.service';
 export class AdminComponent implements OnInit {
   subscriptions = [];
   winner = null;
+  winnerRevealed = false;
 
   constructor(private subscriptionService: SubscriptionService) {}
 
@@ -30,6 +31,10 @@ export class AdminComponent implements OnInit {
 
         this.sendWinningNotification(this.winner);
       });
+  }
+
+  revealWinner() {
+    this.winnerRevealed = true;
   }
 
   sendWinningNotification(subscription) {
